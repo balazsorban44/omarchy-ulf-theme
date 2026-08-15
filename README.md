@@ -1,24 +1,17 @@
 # ulf
 
-Monochrome orange [Omarchy](https://omarchy.org) theme, in a dark and a light
-variant. Sharp corners, one accent: `#ff5a36`.
-
 ![ulf](screenshots/ulf-dark.png)
-
-![ulf-light](screenshots/ulf-light.png)
 
 ## Install
 
 ```bash
-# dark
 omarchy theme install git@github.com:balazsorban44/omarchy-ulf-theme.git
-
-# light
-omarchy theme install git@github.com:balazsorban44/omarchy-ulf-light-theme.git
 ```
 
-To make the desktop's light/dark setting follow whichever is active, install
-the hook once:
+Light variant: [balazsorban44/omarchy-ulf-light-theme](https://github.com/balazsorban44/omarchy-ulf-light-theme)
+
+To make the desktop's light/dark setting follow the active theme, install the
+hook once:
 
 ```bash
 omarchy hook install theme-set hooks/theme-set.d/gtk-appearance
@@ -42,7 +35,7 @@ ANSI names stay because they are positional, not descriptive.
 | cyan | `#b7a993` | `#564241` |
 
 Edit `source-colors.toml`, then run `tools/regenerate-patch.sh` after
-re-rendering.
+re-rendering. See `AGENTS.md`.
 
 ## Credits
 
