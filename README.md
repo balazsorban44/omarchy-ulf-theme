@@ -4,6 +4,9 @@ Two paired [Omarchy](https://omarchy.org) themes drawn from the
 [omarchyplugins.com](https://omarchyplugins.com) palette: near-black surfaces,
 sharp corners, and a single orange accent `#ff5a36`.
 
+> **Light variant:** [balazsorban44/omarchy-ulf-light-theme](https://github.com/balazsorban44/omarchy-ulf-light-theme)
+> Install both and the appearance hook below switches the whole desktop between them.
+
 Every chromatic slot lives in OKLCH hue **22–108**. There is no blue, no green
 and no magenta — only the warm band. Named ANSI slots are kept because they are
 positional, not descriptive: apps ask for "colour 4" and only need it to be
@@ -21,34 +24,27 @@ reliably distinguishable, so `blue` and `cyan` become the low-chroma ash tier.
 | magenta | `#f06400` | `#ad4e44` |
 | cyan | `#b7a993` | `#564241` |
 
-## ulf
-
 ![ulf](screenshots/ulf-dark.png)
-
-## ulf-light
-
-![ulf-light](screenshots/ulf-light.png)
 
 ## Install
 
-The repo root **is** the dark theme, so Omarchy installs it directly:
-
 ```bash
-omarchy theme install git@github.com:<you>/omarchy-ulf-theme.git
+omarchy theme install git@github.com:balazsorban44/omarchy-ulf-theme.git
 ```
 
-The light variant lives in `light/` and is installed by copying it in:
+Omarchy strips `omarchy-` and `-theme`, so this lands as `ulf`. The light
+variant is a separate repo and installs the same way:
 
 ```bash
-cp -r ~/.config/omarchy/themes/ulf/light ~/.config/omarchy/themes/ulf-light
-omarchy theme set ulf-light
+omarchy theme install git@github.com:balazsorban44/omarchy-ulf-light-theme.git
 ```
 
 ### The appearance hook (recommended)
 
 `omarchy theme set` does not touch GTK or gsettings, so switching between the
 two variants would leave the desktop signalling the wrong mode. Install the
-hook and light/dark follows the active theme:
+hook once (it ships in both repos, identical) and light/dark follows the
+active theme:
 
 ```bash
 omarchy hook install theme-set hooks/theme-set.d/gtk-appearance
@@ -64,16 +60,15 @@ Four places have to agree, and fixing one does not fix the others:
 | `gtk-application-prefer-dark-theme` | Chromium's system-theme path only |
 
 Each theme ships its own `gtk.css`; the hook swaps it on every theme change. A
-stale one left over from another theme is exactly what makes apps render light
-under a dark theme.
+stale one left over from the other variant is exactly what makes apps render
+light under a dark theme.
 
 ## How the palette was derived
 
 In a monochrome palette hue carries no information, so lightness and chroma
 have to do all the separating — which makes slot placement a constraint problem
-rather than something to pick by eye. `tools/palette-search.py` (and
-`palette-search-light.py`) run a randomised search plus hill-climbing that
-maximises the worst of **all 91 non-twin pairs**, scored in OKLab under normal,
+rather than something to pick by eye. `tools/palette-search.py` runs a
+randomised search plus hill-climbing that maximises the worst of **all 91 non-twin pairs**, scored in OKLab under normal,
 protanopic and deuteranopic vision, subject to:
 
 - bright twins need a lightness step ≥ 0.06
@@ -82,9 +77,9 @@ protanopic and deuteranopic vision, subject to:
 - the *measured* hue is checked, not the requested one — above L≈0.86 sRGB
   cannot hold a low-hue orange and clips toward peach, drifting the hue up
 
-Worst pair: **0.0526** dark, **0.0423** light. The light variant scores lower
-because AA on a near-white ground caps every slot below L≈0.55, compressing the
-palette into rust and terracotta.
+Worst pair: **0.0526**. The light variant scores 0.0423 — lower, because AA on
+a near-white ground caps every slot below L≈0.55 and compresses that palette
+into rust and terracotta.
 
 **Do not hand-edit a colour.** Change the constraints and re-run the search,
 then regenerate.
@@ -138,4 +133,5 @@ Fonts referenced by the source design: JetBrains Mono and Inter.
 The wallpapers are derived from a [wallhaven](https://wallhaven.cc) image
 (`3kx5gd`) and are included here for convenience only — check its licence before
 redistributing. The dark variant's `wallhaven-3kx5gd-night.jpg` is that image re-graded for
-night use (levels `4%,26%`, desaturated, slight warm tilt).
+night use (levels `4%,26%`, desaturated, slight warm tilt); the light variant
+uses the ungraded original.
