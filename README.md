@@ -2,7 +2,7 @@
 
 ![ulf](screenshots/ulf.png)
 
-![#0d0b09](palette/bg.png) ![#d7d3d0](palette/fg.png) ![#ff5a36](palette/accent.png) ![#dc4506](palette/red.png) ![#f28666](palette/orange.png) ![#ffb000](palette/yellow.png) ![#d57059](palette/green.png) ![#f06400](palette/magenta.png) ![#b7a993](palette/cyan.png) ![#7d7969](palette/blue.png)
+![#0d0b09](palette/bg.svg) ![#d7d3d0](palette/fg.svg) ![#ff5a36](palette/accent.svg) ![#dc4506](palette/red.svg) ![#f28666](palette/orange.svg) ![#ffb000](palette/yellow.svg) ![#d57059](palette/green.svg) ![#f06400](palette/magenta.svg) ![#b7a993](palette/cyan.svg) ![#7d7969](palette/blue.svg)
 
 ## Install
 
