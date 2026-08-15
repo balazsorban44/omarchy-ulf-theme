@@ -1,6 +1,6 @@
 # ulf
 
-![ulf](screenshots/ulf-dark.png)
+![ulf](screenshots/ulf.png)
 
 ![#0d0b09](palette/bg.png) ![#d7d3d0](palette/fg.png) ![#ff5a36](palette/accent.png) ![#dc4506](palette/red.png) ![#f28666](palette/orange.png) ![#ffb000](palette/yellow.png) ![#d57059](palette/green.png) ![#f06400](palette/magenta.png) ![#b7a993](palette/cyan.png) ![#7d7969](palette/blue.png)
 
