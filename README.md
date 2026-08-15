@@ -24,3 +24,7 @@ omarchy hook install theme-set hooks/theme-set.d/gtk-appearance
 Palette inspired by [omarchyplugins.com](https://omarchyplugins.com).
 Wallpaper from [wallhaven](https://wallhaven.cc) (`3kx5gd`) — check its licence
 before redistributing.
+
+`backgrounds/ulf-2-4k.png` is "Intense Gaze of the Minimalist Wolf" by teedee001
+at [Wallpapers.com](https://wallpapers.com/wallpapers/wolf-minimalist-1920-x-1080-wallpaper-is5r0d1quoeztxxq.html),
+recoloured to the ulf palette — check its licence before redistributing.
