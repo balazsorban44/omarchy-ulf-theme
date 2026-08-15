@@ -1,0 +1,39 @@
+# ulf - monochrome orange. Every chromatic slot lives in OKLCH hue 22-108.
+#
+# Hue is a free per-slot parameter inside that band; green and bright_green are
+# additionally pinned to hue 26-52 so they sit beside the accent (h 33.9).
+# Because hue barely separates anything here, lightness and chroma carry the
+# work. Slot positions come from palette-search.py, which maximises the worst
+# of all 91 non-twin pairs under normal, protanopic and deuteranopic vision.
+# Worst pair dE = 0.0526. Do not hand-edit a colour without re-running it.
+mode = "dark"
+
+accent = "#ff5a36"
+selection = "#473d39"
+muted = "#827c77"
+
+background = "#0d0b09"
+dark_background = "#050403"
+darker_background = "#000000"
+lighter_background = "#2f2722"
+
+foreground = "#d7d3d0"
+dark_foreground = "#827c77"
+light_foreground = "#a8a3a0"
+bright_foreground = "#eeeae8"
+
+red = "#dc4506"
+orange = "#f28666"
+yellow = "#ffb000"
+green = "#d57059"
+cyan = "#b7a993"
+blue = "#7d7969"
+magenta = "#f06400"
+brown = "#854a00"
+
+bright_red = "#f78f00"
+bright_yellow = "#ffdb74"
+bright_green = "#ffaa71"
+bright_cyan = "#f5e1d8"
+bright_blue = "#a19186"
+bright_magenta = "#ffb7a7"

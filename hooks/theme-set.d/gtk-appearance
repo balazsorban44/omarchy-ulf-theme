@@ -1,0 +1,59 @@
+#!/bin/bash
+# theme-set hook: make the desktop's light/dark signals follow the active theme.
+#
+# Apps disagree about where "am I dark?" lives, and getting one right does not
+# fix the others. Four separate places have to agree:
+#
+#   gsettings color-scheme               libadwaita, some GTK4
+#   gsettings gtk-theme                  GTK3
+#   gtk-{3,4}.0/gtk.css                  every GTK app, and it OVERRIDES the above
+#   gtk-application-prefer-dark-theme    Chromium's system-theme path only
+#
+# Chromium's own browser colour pref sits above all of these and is not
+# settable from here - chrome://settings/appearance if it disagrees.
+set -uo pipefail
+
+THEME_DIR="$HOME/.local/state/omarchy/current/theme"
+[[ -d $THEME_DIR ]] || exit 0
+
+mode=$(sed -n 's/^[[:space:]]*mode[[:space:]]*=[[:space:]]*"\?\([a-z]*\)"\?.*/\1/p' \
+       "$THEME_DIR/colors.toml" 2>/dev/null | head -1)
+[[ $mode == light ]] || mode=dark
+
+icons=$(cat "$THEME_DIR/icons.theme" 2>/dev/null)
+[[ -n $icons ]] || icons=Adwaita
+
+if [[ $mode == light ]]; then
+  gtk_theme=Adwaita
+  prefer_dark=0
+  scheme=prefer-light
+else
+  gtk_theme=Adwaita-dark
+  prefer_dark=1
+  scheme=prefer-dark
+fi
+
+gsettings set org.gnome.desktop.interface gtk-theme "$gtk_theme"
+gsettings set org.gnome.desktop.interface color-scheme "$scheme"
+gsettings set org.gnome.desktop.interface icon-theme "$icons"
+
+for gtkdir in "$HOME/.config/gtk-3.0" "$HOME/.config/gtk-4.0"; do
+  mkdir -p "$gtkdir"
+  cat >"$gtkdir/settings.ini" <<INI
+[Settings]
+gtk-theme-name=$gtk_theme
+gtk-application-prefer-dark-theme=$prefer_dark
+gtk-icon-theme-name=$icons
+INI
+
+  # A theme's own gtk.css wins over everything above, so it must be swapped in
+  # step with the theme - a stale one from another theme is what makes apps
+  # look light under a dark theme. Themes without one fall back to Adwaita.
+  if [[ -f $THEME_DIR/gtk.css ]]; then
+    cp "$THEME_DIR/gtk.css" "$gtkdir/gtk.css"
+  else
+    rm -f "$gtkdir/gtk.css"
+  fi
+done
+
+exit 0

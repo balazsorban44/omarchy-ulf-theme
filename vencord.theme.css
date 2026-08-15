@@ -1,0 +1,29 @@
+/**
+* @name base16 Discord
+* @author @bypass_
+* @version 0.1.0
+* @description Built using Aether and Pywal
+* @source https://github.com/imbypass/base16-Discord
+**/
+
+/* import the parent */
+@import url('https://imbypass.github.io/base16-discord/omarchy-discord.theme.css');
+
+:root {
+    --color00: #0d0b09;
+    --color01: #dc4506;
+    --color02: #d57059;
+    --color03: #ffb000;
+    --color04: #7d7969;
+    --color05: #f06400;
+    --color06: #b7a993;
+    --color07: #d7d3d0;
+    --color08: #827c77;
+    --color09: #f78f00;
+    --color10: #ffaa71;
+    --color11: #ffdb74;
+    --color12: #a19186;
+    --color13: #ffb7a7;
+    --color14: #f5e1d8;
+    --color15: #d7d3d0;
+}
