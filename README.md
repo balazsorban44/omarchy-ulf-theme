@@ -1,16 +1,33 @@
-# ulf — a monochrome orange Omarchy theme
+# ulf
 
-Two paired [Omarchy](https://omarchy.org) themes drawn from the
-[omarchyplugins.com](https://omarchyplugins.com) palette: near-black surfaces,
-sharp corners, and a single orange accent `#ff5a36`.
+Monochrome orange [Omarchy](https://omarchy.org) theme, in a dark and a light
+variant. Sharp corners, one accent: `#ff5a36`.
 
-> **Light variant:** [balazsorban44/omarchy-ulf-light-theme](https://github.com/balazsorban44/omarchy-ulf-light-theme)
-> Install both and the appearance hook below switches the whole desktop between them.
+![ulf](screenshots/ulf-dark.png)
 
-Every chromatic slot lives in OKLCH hue **22–108**. There is no blue, no green
-and no magenta — only the warm band. Named ANSI slots are kept because they are
-positional, not descriptive: apps ask for "colour 4" and only need it to be
-reliably distinguishable, so `blue` and `cyan` become the low-chroma ash tier.
+![ulf-light](screenshots/ulf-light.png)
+
+## Install
+
+```bash
+# dark
+omarchy theme install git@github.com:balazsorban44/omarchy-ulf-theme.git
+
+# light
+omarchy theme install git@github.com:balazsorban44/omarchy-ulf-light-theme.git
+```
+
+To make the desktop's light/dark setting follow whichever is active, install
+the hook once:
+
+```bash
+omarchy hook install theme-set hooks/theme-set.d/gtk-appearance
+```
+
+## Palette
+
+Every colour sits in one warm hue band — no blue, no green, no magenta. The
+ANSI names stay because they are positional, not descriptive.
 
 | | dark | light |
 |---|---|---|
@@ -24,114 +41,11 @@ reliably distinguishable, so `blue` and `cyan` become the low-chroma ash tier.
 | magenta | `#f06400` | `#ad4e44` |
 | cyan | `#b7a993` | `#564241` |
 
-![ulf](screenshots/ulf-dark.png)
-
-## Install
-
-```bash
-omarchy theme install git@github.com:balazsorban44/omarchy-ulf-theme.git
-```
-
-Omarchy strips `omarchy-` and `-theme`, so this lands as `ulf`. The light
-variant is a separate repo and installs the same way:
-
-```bash
-omarchy theme install git@github.com:balazsorban44/omarchy-ulf-light-theme.git
-```
-
-### The appearance hook (recommended)
-
-`omarchy theme set` does not touch GTK or gsettings, so switching between the
-two variants would leave the desktop signalling the wrong mode. Install the
-hook once (it ships in both repos, identical) and light/dark follows the
-active theme:
-
-```bash
-omarchy hook install theme-set hooks/theme-set.d/gtk-appearance
-```
-
-Four places have to agree, and fixing one does not fix the others:
-
-| signal | read by |
-|---|---|
-| `gsettings color-scheme` | libadwaita, some GTK4 |
-| `gsettings gtk-theme` | GTK3 |
-| `gtk-{3,4}.0/gtk.css` | every GTK app — **overrides the two above** |
-| `gtk-application-prefer-dark-theme` | Chromium's system-theme path only |
-
-Each theme ships its own `gtk.css`; the hook swaps it on every theme change. A
-stale one left over from the other variant is exactly what makes apps render
-light under a dark theme.
-
-## How the palette was derived
-
-In a monochrome palette hue carries no information, so lightness and chroma
-have to do all the separating — which makes slot placement a constraint problem
-rather than something to pick by eye. `tools/palette-search.py` runs a
-randomised search plus hill-climbing that maximises the worst of **all 91 non-twin pairs**, scored in OKLab under normal,
-protanopic and deuteranopic vision, subject to:
-
-- bright twins need a lightness step ≥ 0.06
-- base ANSI slots must clear WCAG AA against the background
-- `green` is pinned to hue 26–52 so it sits beside the accent
-- the *measured* hue is checked, not the requested one — above L≈0.86 sRGB
-  cannot hold a low-hue orange and clips toward peach, drifting the hue up
-
-Worst pair: **0.0526**. The light variant scores 0.0423 — lower, because AA on
-a near-white ground caps every slot below L≈0.55 and compresses that palette
-into rust and terracotta.
-
-**Do not hand-edit a colour.** Change the constraints and re-run the search,
-then regenerate.
-
-## Regenerating
-
-The themes are rendered by [Aether](https://github.com/omacom-io/aether) from
-`source-colors.toml`, which it must fetch over http:
-
-```bash
-cd <dir containing source-colors.toml> && python3 -m http.server 8731 &
-aether --handle-url 'aether://apply?colors=http://127.0.0.1:8731/source-colors.toml&as_omarchy_theme=ulf&silent=true'
-tools/regenerate-patch.sh
-```
-
-Aether owns every rendered file it writes, so `tools/regenerate-patch.sh`
-replays the hand corrections afterwards — chiefly forcing the window border,
-hyprlock ring, mako border and icon theme back to the orange accent. Aether
-derives its own secondary accents and picks **ANSI blue** for borders, which in
-this palette is a near-neutral, so without the patch the orange border comes out
-grey.
-
-Two Aether traps worth knowing:
-
-1. It sometimes reports success while writing a *stale* palette. Read back
-   `colors.toml` afterwards rather than trusting its output.
-2. While its GUI is open it takes the Omarchy theme slot back and repoints the
-   background symlink into `~/.config/aether/theme/`. Close it first.
-
-## Chromium
-
-Chromium ignores every system signal for its own frame. It needs prefs in
-`~/.config/chromium/Default/Preferences`, written **while Chromium is closed**
-because it rewrites the file on exit:
-
-| pref | value |
-|---|---|
-| `extensions.theme.system_theme` | `0` — Classic, not GTK (defaults to GTK on Linux) |
-| `browser.theme.user_color2` | `-42442` (SkColor of `#ff5a36`) |
-| `browser.theme.color_variant2` | `3` — Vibrant; the default Tonal Spot desaturates the seed |
-| `browser.theme.color_scheme2` | `0` — follow the system, so it tracks the theme switch |
-
-Chromium may overwrite `user_color2` with a neutral of its own; re-apply if the
-orange drifts to grey.
+Edit `source-colors.toml`, then run `tools/regenerate-patch.sh` after
+re-rendering.
 
 ## Credits
 
-Palette extracted from [omarchyplugins.com](https://omarchyplugins.com).
-Fonts referenced by the source design: JetBrains Mono and Inter.
-
-The wallpapers are derived from a [wallhaven](https://wallhaven.cc) image
-(`3kx5gd`) and are included here for convenience only — check its licence before
-redistributing. The dark variant's `wallhaven-3kx5gd-night.jpg` is that image re-graded for
-night use (levels `4%,26%`, desaturated, slight warm tilt); the light variant
-uses the ungraded original.
+Palette from [omarchyplugins.com](https://omarchyplugins.com). Wallpaper from
+[wallhaven](https://wallhaven.cc) (`3kx5gd`) — check its licence before
+redistributing.
